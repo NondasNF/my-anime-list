@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>All Users</h1>
-
+<% if current_user.admin %>
 <table>
   <thead>
     <tr>
@@ -23,13 +23,20 @@
         <% if user.admin %>
           <td></td>
           <td></td>
+          <td></td>
         <% else %>
           <td><%= user.follow_animes.all.count %></td>
           <td><%= user.follow_animes.where(favorite: true).count %></td>
+          <td><%= link_to 'Make admin', admin_all_user_path(user), method: :put, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
       </tr>
+      <td><%= link_to 'Destroy', "/all_users/#{user.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
     <% end %>
   </tbody>
 </table>
 
+<% else %>
+You need to be an admin to view this page
+<% end %>
 <br>

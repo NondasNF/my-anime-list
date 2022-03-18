@@ -18,30 +18,43 @@
         <td><%= anime.name %></td>
         <td><%= anime.gender %></td>
         <td><%= anime.classification %></td>
-        <% if !current_user.followed.find_by_id(anime.id) %>
-          <td><%= link_to 'Follow', follow_anime_path(anime), method: :put %></td>
-          <td><%= link_to 'Favorite', follow_and_favorite_anime_path(anime), method: :put %></td>
-
-        <% else %>
-          <td><%= link_to 'Unfollow', unfollow_anime_path(anime), method: :put %></td>
-
-          <% if !current_user.follow_animes.find_by(anime_id: anime.id).favorite %>
-            <td><%= link_to 'Favorite', favorite_anime_path(anime), method: :put %></td>
+        <% if user_signed_in? %>
+          <% if !current_user.followed.find_by_id(anime.id) %>
+          
+            <td><%= link_to 'Follow', follow_anime_path(anime), method: :put %></td>
+            <td><%= link_to 'Favorite', follow_and_favorite_anime_path(anime), method: :put %></td>
 
           <% else %>
-            <td><%= link_to 'Unfavorite', unfavorite_anime_path(anime), method: :put %></td>
+            <td><%= link_to 'Unfollow', unfollow_anime_path(anime), method: :put %></td>
 
+            <% if !current_user.follow_animes.find_by(anime_id: anime.id).favorite %>
+              <td><%= link_to 'Favorite', favorite_anime_path(anime), method: :put %></td>
+
+            <% else %>
+              <td><%= link_to 'Unfavorite', unfavorite_anime_path(anime), method: :put %></td>
+
+            <% end %>
+          <% end %>
+        <% else %>
+          <td><%= link_to 'Follow', new_user_session_path, notice: "Before following you must be sign in!" %></td>
+          <td><%= link_to 'Favorite', new_user_session_path, notice: "Before favorites you must be sign in!" %></td>
+        <% end %>       
+        <td><%= link_to 'Show', anime %></td>
+        <% if user_signed_in? %>
+          <% if !!current_user.admin %>
+            <td><%= link_to 'Edit', edit_anime_path(anime) %></td>
+            <td><%= link_to 'Destroy', anime, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           <% end %>
         <% end %>
-       
-        <td><%= link_to 'Show', anime %></td>
-        <td><%= link_to 'Edit', edit_anime_path(anime) %></td>
-        <td><%= link_to 'Destroy', anime, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
+<% if user_signed_in? %>
+  <% if current_user.admin %>
+    <%= link_to 'New Anime', new_anime_path %>
+  <% end %>
+<% end %>
 
-<%= link_to 'New Anime', new_anime_path %>
