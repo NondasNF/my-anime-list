@@ -21,7 +21,8 @@ ActiveRecord::Schema.define(version: 2022_03_17_063606) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "favorite_animes", force: :cascade do |t|
+  create_table "follow_animes", force: :cascade do |t|
+    t.boolean "favorite", default: false
     t.integer "anime_id"
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false

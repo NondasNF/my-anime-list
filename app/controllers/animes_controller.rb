@@ -15,17 +15,46 @@ class AnimesController < ApplicationController
     @anime = Anime.new
   end
 
+  def follow
+    type = params[:type]
+    anime = Anime.find(params[:id])
+    case type
+    when "follow" 
+      if !current_user.followed.find_by_id(anime.id)
+        current_user.followed << anime
+        redirect_to animes_path, notice: "You followed #{anime.name}"
+      else
+        redirect_to followed_path, notice: "You already follow this anime"
+      end
+    when "unfollow"
+      current_user.followed.delete(anime)
+      redirect_to followed_path, notice: "Unfollowd #{anime.name}"  
+    end
+
+  end
+
   def favorite
     type = params[:type]
-    anime = Anime.find(params['id'])
-    if type == "favorite"
-      current_user.favorites << anime
-      redirect_to animes_path, notice: "You favorited #{anime.name}"
-
-    else #type == "unfavorite"
-      current_user.favorites.delete(anime)
-      redirect_to animes_path, notice: "Unfavorited #{anime.name}"
+    anime = Anime.find(params[:id])
+    case type
+    when "favorite"
+      anime = current_user.follow_animes.find_by(anime_id: anime.id)
+      anime.favorite = true
+      anime.save
+      redirect_to followed_path, notice: "You favorited sucessful"
+    when "unfavorite"
+      anime = current_user.follow_animes.find_by(anime_id: anime.id)
+      anime.favorite = false
+      anime.save
+      redirect_to followed_path, notice: "Unfavorited sucessful"
     end
+  end
+
+  def follow_and_favorite
+    params[:type] = 'follow'
+    follow
+    params[:type] = 'favorite'
+    favorite
   end
 
   # GET /animes/1/edit

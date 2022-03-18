@@ -1,4 +1,4 @@
 class Anime < ApplicationRecord
-  has_many :favorite_animes
-  has_many :favorited_by, through: :favorite_animes, source: :user
+  has_many :follow_animes
+  has_many :followd_by, through: :follow_animes, source: :user
 end
