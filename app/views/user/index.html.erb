@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>All Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Type</th>
+      <th>Create date</th>
+      <th>Followed</th>
+      <th>Favorited</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= user.admin ? 'Administrador' : 'Normal' %></td>
+        <td><%= user.created_at %></td>
+        <% if user.admin %>
+          <td></td>
+          <td></td>
+        <% else %>
+          <td><%= user.follow_animes.all.count %></td>
+          <td><%= user.follow_animes.where(favorite: true).count %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

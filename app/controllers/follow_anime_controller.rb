@@ -1,4 +1,6 @@
 class FollowAnimeController < ApplicationController
+  before_action :authenticate_user!
+  
   def index
     @followed = current_user.followed
   end
