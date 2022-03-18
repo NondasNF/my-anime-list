@@ -17,22 +17,14 @@ class AnimesController < ApplicationController
 
   def follow
     anime = Anime.find(params[:id])
-    if !current_user.followed.find_by_id(anime.id)
-      current_user.followed << anime
-      redirect_to animes_path, notice: "You followed #{anime.name}"
-    else
-      redirect_to followed_path, notice: 'You already follow this anime'
-    end
+    current_user.followed << anime
+    redirect_back(notice: "You followed #{anime.name}", fallback_location: root_path)
   end
 
   def unfollow
     anime = Anime.find(params[:id])
-    if !current_user.followed.find_by_id(anime.id)
-      redirect_to followed_path, notice: "You haven't followed this anime yet"
-    else
-      current_user.followed.delete(anime)
-      redirect_to followed_path, notice: "Unfollowd #{anime.name}"
-    end
+    current_user.followed.delete(anime)
+    redirect_back(notice: "Unfollowd #{anime.name}", fallback_location: root_path)
   end
 
   def favorite
@@ -40,7 +32,7 @@ class AnimesController < ApplicationController
     anime = current_user.follow_animes.find_by(anime_id: anime.id)
     anime.favorite = true
     anime.save
-    redirect_to followed_path, notice: "You favorited sucessful"
+    redirect_back(notice: "You successfully favorited!", fallback_location: root_path)
   end
 
   def unfavorite
@@ -48,18 +40,16 @@ class AnimesController < ApplicationController
     anime = current_user.follow_animes.find_by(anime_id: anime.id)
     anime.favorite = false
     anime.save
-    redirect_to followed_path, notice: "Unfavorited sucessful"
+    redirect_back(notice: "You successfully unfavorited!", fallback_location: root_path)
   end
 
   def follow_and_favorite
     anime = Anime.find(params[:id])
-    if !current_user.followed.find_by_id(anime.id)
-      current_user.followed << anime
-      animefollowed = current_user.follow_animes.find_by(anime_id: anime.id)
-      animefollowed.favorite = true
-      animefollowed.save
-      redirect_to followed_path, notice: "You favorited sucessful"
-    end
+    current_user.followed << anime
+    animefollowed = current_user.follow_animes.find_by(anime_id: anime.id)
+    animefollowed.favorite = true
+    animefollowed.save
+    redirect_back(notice: "You successfully favorited!", fallback_location: root_path)
   end
 
   # GET /animes/1/edit

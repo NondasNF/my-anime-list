@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Animes Followed</h1>
+<h1>Animes Favorited</h1>
 
- <% if current_user.follow_animes.any? %>
+ <% if current_user.follow_animes.where(favorite: true).any? %>
 
 <table>
   <thead>
@@ -16,7 +16,7 @@
   </thead>
 
   <tbody>
-    <% @followed.each do |anime| %>
+    <% @favorited.each do |anime| %>
       <tr>
         <td><%= anime.name %></td>
         <td><%= anime.gender %></td>
@@ -43,7 +43,8 @@
 <%else%>
 
 <br>
-You haven't followed any anime yet!
+You haven't favorited any anime yet!
+
 <%end%>
 
 <br>

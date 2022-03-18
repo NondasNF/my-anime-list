@@ -9,5 +9,6 @@ Rails.application.routes.draw do
     put :follow_and_favorite, on: :member
   end
   get '/followed', to: 'follow_anime#index'
+  get '/favorites', to: 'follow_anime#favorites'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
