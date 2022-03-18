@@ -1,6 +1,0 @@
-<% @animes_favorites.each do |favorite| %>
-  <%= favorite.name%>
-  <%= favorite.gender%>
-  <%= favorite.classification%>
-  <%= link_to 'Destroy', favorite, method: :delete, data: { confirm: 'Are you sure?' } %>
-<% end %>

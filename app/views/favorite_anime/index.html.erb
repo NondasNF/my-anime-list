@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Animes</h1>
+<h1>Favorites</h1>
 
 <table>
   <thead>
@@ -13,21 +13,16 @@
   </thead>
 
   <tbody>
-    <% @animes.each do |anime| %>
+    <% @favorites.each do |anime| %>
       <tr>
         <td><%= anime.name %></td>
         <td><%= anime.gender %></td>
         <td><%= anime.classification %></td>
-        <td><%= link_to 'Favorite', favorite_anime_path(anime, type: "favorite"), method: :put %></td>
-         
+        <td><%= link_to 'Unfavorite', favorite_anime_path(anime, type: "unfavorite"), method: :put %></td>
         <td><%= link_to 'Show', anime %></td>
-        <td><%= link_to 'Edit', edit_anime_path(anime) %></td>
-        <td><%= link_to 'Destroy', anime, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Anime', new_anime_path %>

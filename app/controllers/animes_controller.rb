@@ -15,6 +15,19 @@ class AnimesController < ApplicationController
     @anime = Anime.new
   end
 
+  def favorite
+    type = params[:type]
+    anime = Anime.find(params['id'])
+    if type == "favorite"
+      current_user.favorites << anime
+      redirect_to animes_path, notice: "You favorited #{anime.name}"
+
+    else #type == "unfavorite"
+      current_user.favorites.delete(anime)
+      redirect_to animes_path, notice: "Unfavorited #{anime.name}"
+    end
+  end
+
   # GET /animes/1/edit
   def edit
   end
