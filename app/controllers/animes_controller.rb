@@ -16,45 +16,50 @@ class AnimesController < ApplicationController
   end
 
   def follow
-    type = params[:type]
     anime = Anime.find(params[:id])
-    case type
-    when "follow" 
-      if !current_user.followed.find_by_id(anime.id)
-        current_user.followed << anime
-        redirect_to animes_path, notice: "You followed #{anime.name}"
-      else
-        redirect_to followed_path, notice: "You already follow this anime"
-      end
-    when "unfollow"
-      current_user.followed.delete(anime)
-      redirect_to followed_path, notice: "Unfollowd #{anime.name}"  
+    if !current_user.followed.find_by_id(anime.id)
+      current_user.followed << anime
+      redirect_to animes_path, notice: "You followed #{anime.name}"
+    else
+      redirect_to followed_path, notice: 'You already follow this anime'
     end
+  end
 
+  def unfollow
+    anime = Anime.find(params[:id])
+    if !current_user.followed.find_by_id(anime.id)
+      redirect_to followed_path, notice: "You haven't followed this anime yet"
+    else
+      current_user.followed.delete(anime)
+      redirect_to followed_path, notice: "Unfollowd #{anime.name}"
+    end
   end
 
   def favorite
-    type = params[:type]
     anime = Anime.find(params[:id])
-    case type
-    when "favorite"
-      anime = current_user.follow_animes.find_by(anime_id: anime.id)
-      anime.favorite = true
-      anime.save
-      redirect_to followed_path, notice: "You favorited sucessful"
-    when "unfavorite"
-      anime = current_user.follow_animes.find_by(anime_id: anime.id)
-      anime.favorite = false
-      anime.save
-      redirect_to followed_path, notice: "Unfavorited sucessful"
-    end
+    anime = current_user.follow_animes.find_by(anime_id: anime.id)
+    anime.favorite = true
+    anime.save
+    redirect_to followed_path, notice: "You favorited sucessful"
+  end
+
+  def unfavorite
+    anime = Anime.find(params[:id])
+    anime = current_user.follow_animes.find_by(anime_id: anime.id)
+    anime.favorite = false
+    anime.save
+    redirect_to followed_path, notice: "Unfavorited sucessful"
   end
 
   def follow_and_favorite
-    params[:type] = 'follow'
-    follow
-    params[:type] = 'favorite'
-    favorite
+    anime = Anime.find(params[:id])
+    if !current_user.followed.find_by_id(anime.id)
+      current_user.followed << anime
+      animefollowed = current_user.follow_animes.find_by(anime_id: anime.id)
+      animefollowed.favorite = true
+      animefollowed.save
+      redirect_to followed_path, notice: "You favorited sucessful"
+    end
   end
 
   # GET /animes/1/edit

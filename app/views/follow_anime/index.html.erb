@@ -20,16 +20,16 @@
         <td><%= anime.gender %></td>
         <td><%= anime.classification %></td>
          <% if !current_user.followed.find_by_id(anime.id) %>
-          <td><%= link_to 'Follow', follow_anime_path(anime, type: "follow"), method: :put %></td>
-          <td><%= link_to 'Favorite', follow_and_favorite_anime_path(anime, type: "favorite"), method: :put %></td>
+          <td><%= link_to 'Follow', follow_anime_path(anime), method: :put %></td>
+          <td><%= link_to 'Favorite', follow_and_favorite_anime_path(anime), method: :put %></td>
 
         <% else %>
-          <td><%= link_to 'Unfollow', follow_anime_path(anime, type: "unfollow"), method: :put %></td>
+          <td><%= link_to 'Unfollow', unfollow_anime_path(anime), method: :put %></td>
           <% if !current_user.follow_animes.find_by(anime_id: anime.id).favorite %>
             <td><%= link_to 'Favorite', favorite_anime_path(anime, type: "favorite"), method: :put %></td>
 
           <% else %>
-            <td><%= link_to 'Unfavorite', favorite_anime_path(anime, type: "unfavorite"), method: :put %></td>
+            <td><%= link_to 'Unfavorite', unfavorite_anime_path(anime, type: "unfavorite"), method: :put %></td>
 
           <% end %>
         <% end %>
