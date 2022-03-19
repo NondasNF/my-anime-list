@@ -2,15 +2,15 @@
 
 <h1>All Users</h1>
 <% if current_user.admin %>
-<table>
-  <thead>
+<table class="table">
+  <thead class="table-dark">
     <tr>
       <th>Email</th>
       <th>Type</th>
       <th>Create date</th>
       <th>Followed</th>
       <th>Favorited</th>
-      <th colspan="5"></th>
+      <th colspan="8"></th>
     </tr>
   </thead>
 
@@ -29,8 +29,8 @@
           <td><%= user.follow_animes.where(favorite: true).count %></td>
           <td><%= link_to 'Make admin', admin_all_user_path(user), method: :put, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
+        <td><%= link_to 'Destroy', "/all_users/#{user.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
-      <td><%= link_to 'Destroy', "/all_users/#{user.id}", method: :delete, data: { confirm: 'Are you sure?' } %></td>
 
     <% end %>
   </tbody>

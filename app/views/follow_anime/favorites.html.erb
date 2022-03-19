@@ -4,14 +4,14 @@
 
  <% if current_user.follow_animes.where(favorite: true).any? %>
 
-<table>
-  <thead>
+<table class="table">
+  <thead class="table-dark">
     <tr>
       <th>Name</th>
       <th>Gender</th>
       <th>Classification</th>
       <th></th>
-      <th colspan="4"></th>
+      <th colspan="9"></th>
     </tr>
   </thead>
 
